@@ -1,12 +1,20 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:poems_arabic/token/token_provider.dart';
 import 'package:poems_arabic/widgets/bottom_nav.dart';
 import 'package:poems_arabic/widgets/login.dart';
+import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 void main() {
-  runApp(PoemsArabic());
+  runApp(
+    ChangeNotifierProvider<TokenProvider>(
+      create: (_) => TokenProvider(),
+      child: PoemsArabic(),
+    ),
+  );
+  // runApp(PoemsArabic());
 }
 
 const primaryColor = Color.fromARGB(255, 116, 23, 139);
@@ -38,12 +46,12 @@ class PoemsArabic extends StatelessWidget {
       ),
       home: Splash(),
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalCupertinoLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: [
+      supportedLocales: const [
         Locale("ar", "AE"),
       ],
     );
@@ -51,6 +59,8 @@ class PoemsArabic extends StatelessWidget {
 }
 
 class Splash extends StatelessWidget {
+  const Splash({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SplashScreen(

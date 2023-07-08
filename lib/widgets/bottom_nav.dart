@@ -6,8 +6,14 @@ import 'package:poems_arabic/widgets/home.dart';
 import 'package:poems_arabic/widgets/information.dart';
 import 'package:poems_arabic/widgets/saved.dart';
 import 'package:poems_arabic/widgets/subscribe.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../token/token_class.dart';
+import '../token/token_provider.dart';
 
 class BottomNavBarWidget extends StatefulWidget {
+  // final String token;
   const BottomNavBarWidget({super.key});
 
   @override
@@ -16,14 +22,39 @@ class BottomNavBarWidget extends StatefulWidget {
 
 class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
   int selectedIndex = 0;
+
+  // late String token;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   loadToken();
+  // }
+
+  // //load token
+  // void loadToken() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? token = prefs.getString('token');
+
+  //   setState(() {
+  //     token = token;
+  //   });
+  // }
+
   final screens = [
     HomeScreen(),
     SubscribeScreen(),
     SavedItemsScreen(),
     InformationScreen(),
   ];
+
   @override
   Widget build(BuildContext context) {
+    final tokenProvider = Provider.of<TokenProvider>(context);
+
+    // Access the token
+    final Token? token = tokenProvider.token;
+    print(token);
     return Scaffold(
       body: screens[selectedIndex],
       bottomNavigationBar: Container(

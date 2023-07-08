@@ -41,6 +41,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   custom_switch: ^0.0.1
   flutter_switch: ^0.3.2
+  http: ^0.13.6
+  shared_preferences: ^2.1.2
+  provider: ^6.0.5
+  share_plus: ^7.0.2
+  file_picker: ^5.3.1
+  image_picker: ^0.8.4+4
+  path_provider: ^2.0.6
+  image_gallery_saver: ^2.0.3
+  share: ^2.0.4
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +84,7 @@ flutter:
     - assets/images/singles.png
     - assets/images/concludes.png
     - assets/images/multiline.png
+    - assets/images/user-icon.png
 
   #   - images/a_dot_ham.jpeg
 

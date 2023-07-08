@@ -1,8 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:poems_arabic/main.dart';
 import 'package:poems_arabic/widgets/bottom_nav.dart';
 import 'package:poems_arabic/widgets/home.dart';
 import 'package:poems_arabic/widgets/new_user.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../token/token_class.dart';
+import '../token/token_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,11 +24,85 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool passwordVisible = false;
+  bool isLoading = false;
+  // String token = '';
 
   @override
   void initState() {
     super.initState();
     passwordVisible = true;
+  }
+
+  // login function
+  // void postLogin(String email, String password) async {
+
+  //   try {
+  //     Response response = await post(
+  //         Uri.parse('https://poams-app-eefd9d8f5585.herokuapp.com/users/login'),
+  //         body: jsonEncode({
+  //           "username": email,
+  //           "password": password,
+  //         }),
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         });
+  //     if (response.statusCode == 200) {
+
+  //       var tokenResponse = jsonDecode(response.body.toString());
+  //       print(tokenResponse);
+
+  //       Navigator.of(context).pushReplacement(
+  //           MaterialPageRoute(builder: (context) => BottomNavBarWidget()));
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text('الايميل او كلمة السر غير صحيحة'),
+  //         ),
+  //       );
+  //       print('error occured ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     print('problem with ${e}');
+  //   }
+  // }
+
+  void postLogin(String email, String password) async {
+    try {
+      Response response = await post(
+        Uri.parse('https://poams-app-eefd9d8f5585.herokuapp.com/users/login'),
+        body: jsonEncode({
+          "username": email,
+          "password": password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
+      if (response.statusCode == 200) {
+        var tokenResponse = jsonDecode(response.body);
+        print(tokenResponse);
+
+        final tokenValue = tokenResponse['token'];
+        final token = Token(tokenValue);
+
+        final tokenProvider =
+            Provider.of<TokenProvider>(context, listen: false);
+        tokenProvider.token = token;
+
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => BottomNavBarWidget()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('الايميل او كلمة السر غير صحيحة'),
+          ),
+        );
+        print('error occurred ${response.statusCode}');
+      }
+    } catch (e) {
+      print('problem with $e');
+    }
   }
 
   @override
@@ -67,7 +150,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: EdgeInsets.only(bottom: 10),
                     //email text field
                     child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.text,
+                      // textDirection: TextDirection.ltr,
+                      controller: emailController,
                       style: const TextStyle(fontSize: 12),
                       decoration: InputDecoration(
                         fillColor: const Color.fromARGB(255, 247, 248, 251),
@@ -88,6 +173,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   //password text field
                   TextFormField(
                     obscureText: passwordVisible,
+                    controller: passwordController,
+                    // textDirection: TextDirection.ltr,
                     style: const TextStyle(fontSize: 12),
                     decoration: InputDecoration(
                       fillColor: const Color.fromARGB(255, 247, 248, 251),
@@ -120,32 +207,58 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 226),
                     //login button
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // login api call here
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => BottomNavBarWidget()));
-                        },
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              );
+                              if (emailController.text.isEmpty ||
+                                  passwordController.text.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Text('الايميل وكلمة المرور مطلوبة'),
+                                  ),
+                                );
+                              } else {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                postLogin(emailController.text,
+                                    passwordController.text);
+                              }
+                            },
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                              ),
+                            ),
+                            child: const Text(
+                              'تسجيل دخول',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),
-                        child: const Text(
-                          'تسجيل دخول',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
+                        if (isLoading)
+                          Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      ),
+                      ],
                     ),
                   ),
                   // create account text button

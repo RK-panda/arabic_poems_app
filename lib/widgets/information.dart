@@ -30,8 +30,9 @@ class _InformationScreenState extends State<InformationScreen> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => BottomNavBarWidget()));
+                          Navigator.of(context).pop();
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) => BottomNavBarWidget()));
                         },
                         icon: const Icon(
                           Icons.close_sharp,

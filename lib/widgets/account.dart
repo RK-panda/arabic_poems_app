@@ -115,8 +115,9 @@ class _AccountScreenState extends State<AccountScreen> {
                       children: [
                         IconButton(
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => BottomNavBarWidget()));
+                            Navigator.of(context).pop();
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) => BottomNavBarWidget()));
                           },
                           icon: const Icon(
                             Icons.close_sharp,
@@ -147,49 +148,49 @@ class _AccountScreenState extends State<AccountScreen> {
                         padding: const EdgeInsets.only(top: 48),
                         child: Column(
                           children: [
-                            Stack(
-                              children: [
-                                CircleAvatar(
-                                  radius: 48,
-                                  backgroundImage:
-                                      AssetImage('assets/images/profile.jpg'),
-                                ),
-                                Positioned(
-                                  bottom: 1,
-                                  right: 1,
-                                  child: InkWell(
-                                    onTap: () {
-                                      // here add add image from gallery function
-                                    },
-                                    child: Container(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(2),
-                                        child: Icon(
-                                          Icons.edit_outlined,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                            50,
-                                          ),
-                                        ),
-                                        color: Colors.amber,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            offset: Offset(2, 4),
-                                            color:
-                                                Colors.black.withOpacity(0.3),
-                                            blurRadius: 3,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            // Stack(
+                            //   children: [
+                            //     CircleAvatar(
+                            //       radius: 48,
+                            //       backgroundImage:
+                            //           AssetImage('assets/images/profile.jpg'),
+                            //     ),
+                            //     Positioned(
+                            //       bottom: 1,
+                            //       right: 1,
+                            //       child: InkWell(
+                            //         onTap: () {
+                            //           // here add add image from gallery function
+                            //         },
+                            //         child: Container(
+                            //           child: Padding(
+                            //             padding: const EdgeInsets.all(2),
+                            //             child: Icon(
+                            //               Icons.edit_outlined,
+                            //               color: Colors.white,
+                            //             ),
+                            //           ),
+                            //           decoration: BoxDecoration(
+                            //             borderRadius: BorderRadius.all(
+                            //               Radius.circular(
+                            //                 50,
+                            //               ),
+                            //             ),
+                            //             color: Colors.amber,
+                            //             boxShadow: [
+                            //               BoxShadow(
+                            //                 offset: Offset(2, 4),
+                            //                 color:
+                            //                     Colors.black.withOpacity(0.3),
+                            //                 blurRadius: 3,
+                            //               ),
+                            //             ],
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
                             TextButton(
                               onPressed: () {
                                 showAlertDialog(context);

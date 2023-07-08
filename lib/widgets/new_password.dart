@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poems_arabic/widgets/login.dart';
 
 import '../main.dart';
 import 'bottom_nav.dart';
@@ -109,6 +110,8 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                           // login api call here
                           // Navigator.of(context).push(MaterialPageRoute(
                           //     builder: (context) => BottomNavBarWidget()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
                         },
                         style: ButtonStyle(
                           shape:

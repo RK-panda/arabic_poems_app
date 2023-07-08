@@ -3,10 +3,15 @@ import 'package:poems_arabic/main.dart';
 import 'package:poems_arabic/widgets/account.dart';
 import 'package:poems_arabic/widgets/login.dart';
 
+import '../token/token_provider.dart';
 import 'bottom_nav.dart';
 
 class SideMenuDrawer extends StatelessWidget {
-  const SideMenuDrawer({super.key});
+  // final String token;
+  SideMenuDrawer({super.key});
+
+  // void userLogout() async {}
+  final tokenProvider = TokenProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -23,21 +28,22 @@ class SideMenuDrawer extends StatelessWidget {
                     padding: EdgeInsets.all(20),
                     child: CircleAvatar(
                       radius: 20,
-                      backgroundImage: AssetImage('assets/images/profile.jpg'),
+                      backgroundImage:
+                          AssetImage('assets/images/user-icon.png'),
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Text(
-                        'مرحبا, ',
+                        'مرحباً... ',
                         style: TextStyle(color: primaryColor, fontSize: 12),
                       ),
-                      Text(
-                        // get this name from backend
-                        'محمد',
-                        style: TextStyle(color: primaryColor, fontSize: 12),
-                      ),
+                      // Text(
+                      //   // get this name from backend
+                      //   'محمد',
+                      //   style: TextStyle(color: primaryColor, fontSize: 12),
+                      // ),
                     ],
                   ),
                 ],
@@ -60,8 +66,9 @@ class SideMenuDrawer extends StatelessWidget {
                     style: TextStyle(color: primaryColor, fontSize: 10),
                   ),
                   onTap: () => {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const BottomNavBarWidget()))
+                    Navigator.of(context).pop()
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) =>  BottomNavBarWidget()))
                   },
                 ),
               ),
@@ -107,8 +114,10 @@ class SideMenuDrawer extends StatelessWidget {
                   ),
                   onTap: () => {
                     // here add logout credentials
+                    tokenProvider.logOut(),
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const LoginScreen()))
+                        builder: (context) => const LoginScreen())),
+                    print('token value is${tokenProvider.token}')
                   },
                 ),
               ),

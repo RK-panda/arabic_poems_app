@@ -33,8 +33,9 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => BottomNavBarWidget()));
+                          Navigator.of(context).pop();
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) => BottomNavBarWidget()));
                         },
                         icon: const Icon(
                           Icons.close_sharp,
